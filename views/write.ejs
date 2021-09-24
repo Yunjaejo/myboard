@@ -10,11 +10,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
-    <title>글 쓰기 페이지</title>
+    <title>글 작성 페이지</title>
 </head>
 
 <body>
-    글 쓰기 페이지
+    <form action="./write" method="POST">
+        작성자 : <input type="text" id="name"> 비밀번호 : <input type="password" id="pw"> <br><br>
+        제목 : <input type="text" id="title" size="50"><br><br>
+        내용 <textarea cols="100" rows="10" id="intext">
+
+        </textarea><br><br>
+        <button id="submit" onclick="">작성하기</button>
+        <button id="reset" onclick="">취소하기</button>
+
+    </form>
 
 
     <!-- Optional JavaScript; choose one of the two! -->
