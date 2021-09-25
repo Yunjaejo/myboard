@@ -8,7 +8,14 @@ router.get("/getajax", async (req, res, next) => {
 });
 
 router.post('/postTest', (req, res, next) => {
-    console.log(req.body)
+    const { name_give, pw_give, title_give, intext_give } = req.body
+    Post.create({
+        name: name_give,
+        pw: pw_give,
+        title: title_give,
+        intext: intext_give
+    })
+
 
 })
 

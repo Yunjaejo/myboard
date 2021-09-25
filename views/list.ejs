@@ -11,6 +11,22 @@
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
     <title>글 목록 페이지</title>
+
+    <script>
+        function get_list() {
+            $("#postList").empty();
+            $.ajax({
+                type: "GET",
+                url: `/api/post`,
+                data: {},
+                success: function (response) {
+
+
+
+                }
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -23,7 +39,7 @@
                 <th scope="col">게시일</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="postList">
             <tr>
                 <th scope="row">1</th>
                 <td>Mark</td>
