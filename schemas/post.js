@@ -19,7 +19,7 @@ const postSchema = new Schema({
         required: true
     },
     postTime: {
-        type: Number,
+        type: String,
         required: true
     }
 });
