@@ -17,6 +17,10 @@ const postSchema = new Schema({
     intext: {
         type: String,
         required: true
+    },
+    postTime: {
+        type: Number,
+        required: true
     }
 });
 
