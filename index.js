@@ -21,7 +21,7 @@ app.get('/write', (req, res) => {
     res.render('write')
 })
 
-app.get('/list', (req, res) => {
+app.get('/', (req, res) => {
     res.render('list')
 })
 
