@@ -25,11 +25,14 @@
                     intext_give: intext
                 },
                 success: function (response) {
-                    console.log(response)
+                    if (name && pw && title && intext !== "") {
+                        alert('ㅈㅓ장 완료')
+                        console.log('1234')
+                        window.location.replace('/list')
+                    } else {
+                        alert("빈칸을 입력해주세요")
+                    }
                 },
-                error: function (err) {
-                    console.log("전달 실패" + err)
-                }
             });
         }
 

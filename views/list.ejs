@@ -31,11 +31,12 @@
                         let name = response[i]['name']
                         let title = response[i]['title']
                         let postTime = response[i]['postTime']
+                        let _id = response[i]['_id']
 
                         let temp_html = `<tr>
                                             <th scope="row">${count}</th>
                                             <td>${name}</td>
-                                            <td><a href="/">${title}</td>
+                                            <td><a href="/postTest?_id=${_id}/">${title}</td>
                                             <td>${postTime}</td>
                                         </tr>`
 
@@ -46,6 +47,10 @@
 
                 }
             });
+        }
+
+        function goToWrite() {
+            window.location.href = "/write"
         }
     </script>
 </head>
@@ -70,7 +75,7 @@
         </tbody>
 
     </table>
-    <button onclick="">글 작성</button>
+    <button onclick="goToWrite()">글 작성</button>
 
 </body>
 
