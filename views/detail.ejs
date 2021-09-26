@@ -2,11 +2,10 @@
 <html>
 
 <head>
-    <!-- Required meta tags -->
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -22,7 +21,6 @@
         $(document).ready(function () {
             get_post()
         })
-
 
         function get_post() {
             $.ajax({
@@ -46,11 +44,28 @@
                     $('#detail').append(temp_html)
 
 
+
                 }
             })
         }
+        function deletePost() {
+            $.ajax({
+                type: "DELETE",
+                url: `/api/postTest/${_id}`,
+                data: {},
+                success: function (response) {
+                    alert('삭제 완료')
+                    window.location.replace('/')
+                }
+            })
+        }
+
+
         function goToList() {
             window.location.href = "/"
+        }
+        function goToEdit() {
+            window.location.href = `/edit?_id=${_id}`
         }
 
 
@@ -62,12 +77,8 @@
     <div id="detail">
 
     </div>
-    <button id="edit" onclick="">수정하기</button> <button id="delete" onclick="">삭제하기</button>
+    <button id="edit" onclick="goToEdit()">수정하기</button> <button id="delete" onclick="deletePost()">삭제하기</button>
     <button id="list" onclick="goToList()">목록으로</button>
-
-    <!-- Optional JavaScript; choose one of the two! -->
-
-    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
 
 </body>
 

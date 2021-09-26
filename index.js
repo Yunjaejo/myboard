@@ -33,10 +33,6 @@ app.get('/postTest', (req, res) => {
     res.render('detail')
 })
 
-// app.post('/postTest', (req, res) => {
-//     console.log(req.body)
-//     res.json({ ok: true })
-// })
 
 
 

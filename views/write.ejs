@@ -35,6 +35,9 @@
                 },
             });
         }
+        function goToList() {
+            window.location.href = "/"
+        }
 
     </script>
 </head>
@@ -45,7 +48,7 @@
     제목 : <input type="text" id="title" size="50"><br><br>
     내용 <textarea cols="100" rows="10" id="intext"></textarea><br><br>
     <button id="submit" onclick="getData()">제출하기</button>
-    <button id="reset" onclick="">취소하기</button>
+    <button id="reset" onclick="goToList()">취소하기</button>
 
 </body>
 

@@ -29,10 +29,20 @@ router.get('/postTest/:_id', async (req, res) => {
     const { _id } = req.params
     console.log(_id)
     posts = await Post.findOne({ _id: _id })
-    // res.json({ posts })
     res.json({ posts: posts })
 })
 // params는 api통신할때 썼던 api/postTest/ <<<<235236347347>>>>
 // query는 쿼리스트링, postTest?_id=1362347348
+
+router.delete('/postTest/:_id', async (req, res) => {
+    await Post.deleteOne({ _id: req.params._id })
+    res.send({ result: "success" })
+})
+
+
+
+
+
+
 
 module.exports = router;
