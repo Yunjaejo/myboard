@@ -17,7 +17,6 @@ router.post('/postTest', (req, res) => {
     })
     res.send({ result: "success" })
 
-
 })
 
 router.get('/postTest', async (req, res) => {
@@ -27,7 +26,6 @@ router.get('/postTest', async (req, res) => {
 
 router.get('/postTest/:_id', async (req, res) => {
     const { _id } = req.params
-    console.log(_id)
     posts = await Post.findOne({ _id: _id })
     res.json({ posts: posts })
 })
@@ -36,7 +34,6 @@ router.get('/postTest/:_id', async (req, res) => {
 
 router.post('/postTest/:_id', async (req, res) => {
     const { pwPrompt } = req.body
-    console.log(pwPrompt)
 })
 
 router.delete('/postTest/:_id', async (req, res) => {
@@ -44,7 +41,6 @@ router.delete('/postTest/:_id', async (req, res) => {
     posts = await Post.findOne({ _id: _id })
     console.log(posts['pw'])
     const { pwPrompt } = req.body
-    console.log(pwPrompt)
     if (posts['pw'] === pwPrompt) {
         await Post.deleteOne({ _id: req.params._id })
         res.send({ result: "success" })
@@ -60,11 +56,6 @@ router.patch('/postTest/:_id', async (req, res) => {
     await Post.updateOne({ _id }, { $set: { name: name_give, title: title_give, intext: intext_give } });
     res.send({ result: "success" })
 })
-
-
-
-
-
 
 
 

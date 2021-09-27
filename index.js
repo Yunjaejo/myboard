@@ -18,7 +18,6 @@ app.set('views', __dirname + '/views'); // views의 경로는 /views
 app.set('view engine', 'ejs'); // 뷰 엔진으로 ejs 사용
 
 app.get('/write', (req, res) => {
-
     res.render('write')
 })
 
