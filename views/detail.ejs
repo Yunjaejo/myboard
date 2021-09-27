@@ -48,18 +48,27 @@
                 }
             })
         }
+
         function deletePost() {
+            let pwPrompt = prompt('비밀번호를 입력하세요')
+
             $.ajax({
                 type: "DELETE",
                 url: `/api/postTest/${_id}`,
-                data: {},
+                data: {
+                    pwPrompt: pwPrompt
+                },
                 success: function (response) {
-                    alert('삭제 완료')
-                    window.location.replace('/')
+
+                    if (response['result'] === 'success') {
+                        alert('삭제 성공')
+                        window.location.replace('/')
+                    } else {
+                        alert('비밀번호를 확인해주세요')
+                    }
                 }
             })
         }
-
 
         function goToList() {
             window.location.href = "/"
@@ -67,6 +76,7 @@
         function goToEdit() {
             window.location.href = `/edit?_id=${_id}`
         }
+
 
 
     </script>

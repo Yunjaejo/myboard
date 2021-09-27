@@ -49,7 +49,7 @@
             let title = $("#title").val()
             let intext = $("#intext").val()
             $.ajax({
-                type: "PUT",
+                type: "PATCH",
                 url: `/api/postTest/${_id}`,
                 data: {
                     name_give: name,
@@ -58,7 +58,8 @@
                     intext_give: intext
                 },
                 success: function (response) {
-                    console.log(response)
+                    alert('수정완료')
+                    window.location.replace(`/postTest?_id=${_id}/`)
                 }
             })
         }
@@ -71,15 +72,15 @@
 </head>
 
 <body>
-    <form>
-        작성자 : <input type="text" id="name" name="inputName"> 비밀번호 : <input type="password" id="pw" name="inputPw">
-        <br><br>
-        제목 : <input type="text" id="title" size="50" name="inputTitle"><br><br>
-        내용 <textarea cols="100" rows="10" id="intext" name="textIntext"></textarea><br><br>
-        <button id="edit">수정하기</button>
-        <button><a href="javascript:history.back();">뒤로가기</a></button>
 
-    </form>
+    작성자 : <input type="text" id="name" name="inputName"> 비밀번호 : <input type="password" id="pw" name="inputPw">
+    <br><br>
+    제목 : <input type="text" id="title" size="50" name="inputTitle"><br><br>
+    내용 <textarea cols="100" rows="10" id="intext" name="textIntext"></textarea><br><br>
+    <button id="edit" onclick="editPost()">수정하기</button>
+    <button><a href="javascript:history.back();">뒤로가기</a></button>
+
+
 
 
 

@@ -34,10 +34,34 @@ router.get('/postTest/:_id', async (req, res) => {
 // params는 api통신할때 썼던 api/postTest/ <<<<235236347347>>>>
 // query는 쿼리스트링, postTest?_id=1362347348
 
+router.post('/postTest/:_id', async (req, res) => {
+    const { pwPrompt } = req.body
+    console.log(pwPrompt)
+})
+
 router.delete('/postTest/:_id', async (req, res) => {
-    await Post.deleteOne({ _id: req.params._id })
+    const { _id } = req.params
+    posts = await Post.findOne({ _id: _id })
+    console.log(posts['pw'])
+    const { pwPrompt } = req.body
+    console.log(pwPrompt)
+    if (posts['pw'] === pwPrompt) {
+        await Post.deleteOne({ _id: req.params._id })
+        res.send({ result: "success" })
+    } else (
+        res.send({ result: "fail" })
+    )
+})
+
+
+router.patch('/postTest/:_id', async (req, res) => {
+    const { _id } = req.params
+    const { name_give, pw_give, title_give, intext_give } = req.body
+    await Post.updateOne({ _id }, { $set: { name: name_give, title: title_give, intext: intext_give } });
     res.send({ result: "success" })
 })
+
+
 
 
 
