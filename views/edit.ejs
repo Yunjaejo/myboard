@@ -59,7 +59,7 @@
                 },
                 success: function (response) {
                     alert('수정완료')
-                    window.location.replace(`/postTest?_id=${_id}/`)
+                    window.location.replace(`/postTest?_id=${_id}`)
                 }
             })
         }
@@ -73,7 +73,7 @@
 
 <body>
 
-    작성자 : <input type="text" id="name" name="inputName"> 비밀번호 : <input type="password" id="pw" name="inputPw">
+    작성자 : <input type="text" id="name" name="inputName">
     <br><br>
     제목 : <input type="text" id="title" size="50" name="inputTitle"><br><br>
     내용 <textarea cols="100" rows="10" id="intext" name="textIntext"></textarea><br><br>

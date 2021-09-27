@@ -74,9 +74,23 @@
             window.location.href = "/"
         }
         function goToEdit() {
-            window.location.href = `/edit?_id=${_id}`
-        }
 
+            let pwPrompt = prompt('비밀번호를 입력하세요')
+            $("#postList").empty();
+            $.ajax({
+                type: "GET",
+                url: `/api/postTest/${_id}`,
+                data: {},
+                success: function (response) {
+                    let pw = response['posts']['pw']
+                    if (pwPrompt === pw) {
+                        window.location.href = `/edit?_id=${_id}`
+                    } else {
+                        alert('비밀번호를 확인하세요')
+                    }
+                }
+            })
+        }
 
 
     </script>
