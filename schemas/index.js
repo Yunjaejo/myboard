@@ -1,11 +1,15 @@
 const mongoose = require('mongoose')
 
 const connect = () => {
-  mongooseßß
-    .connect('mongodb://localhost:27017/myboard?authSource=admin', {
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
-    })
+  mongoose
+    .connect(
+      // 'mongodb://test:test@13.124.99.118:27017/myboard?authSource=admin',
+      'mongodb://localhost:27017/myboard',
+      {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      }
+    )
     .catch((err) => console.log(err))
 }
 

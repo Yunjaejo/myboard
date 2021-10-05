@@ -43,9 +43,6 @@
 
                         $('#postList').append(temp_html)
                     }
-
-
-
                 }
             });
         }
@@ -53,10 +50,46 @@
         function goToWrite() {
             window.location.href = "/write"
         }
+        function signUp() {
+            window.location.href = '/signUp'
+        }
+
+        function login() {
+            let id = $("#id").val()
+            let pw = $("#pw").val()
+            $.ajax({
+                type: "POST",
+                url: "/api/login",
+                data: {
+                    id_give: id,
+                    pw_give: pw
+                },
+                success: function (response) {
+                    alert("로그인 되었습니다")
+                    window.location.href = '/'
+                },
+                error : function (xhr, status, error) {
+                    if(xhr.status === 400) {
+                        alert('아이디와 비밀번호를 확인하세요')
+                    }
+                }
+           });
+        }
+
+        function delCookie() {
+            document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT'
+            window.location.reload()
+        }       
     </script>
 </head>
 
 <body>
+    <% if (!user) { %>
+    ID:<input type="text" id="id"> PW:<input type="password" id="pw"> <button onclick="login()">로그인</button> <button onclick="signUp()">회원가입</button>
+    <% } else { %>
+    <%= user %> 로그인 중입니다. <button onclick="delCookie()">로그아웃</button>
+    <% } %>
+    <hr>
     <table class="table">
         <thead>
             <tr>
