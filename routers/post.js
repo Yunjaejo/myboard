@@ -126,13 +126,36 @@ router.delete('/delComment/:id', authMiddleware, async (req, res) => {
   const { _id } = req.params;
   const userId = res.locals.user;
   const { value } = req.body;
-  targetComment = await Comment.findOne({ _id: value });
-  if (userId === targetComment.userId) {
+  const comment = await Comment.findOne({ _id: value });
+  if (userId === comment.userId) {
     await Comment.deleteOne({ _id: value });
     res.send({ result: 'success' });
   } else {
     res.status(400).send({});
   }
+});
+
+// 댓글 수정시 인풋창 값
+router.post('/editComment/:_id', authMiddleware, async (req, res) => {
+  const { _id } = req.params;
+  const { value } = req.body;
+  const userId = res.locals.user;
+
+  const comment = await Comment.findOne({ _id: value });
+  if (userId === comment.userId) {
+    res.send(comment.comment);
+  } else {
+    res.status(400).send({});
+  }
+});
+
+// 댓글 수정본 저장
+router.patch('/editSubmit/:_id', authMiddleware, async (req, res) => {
+  const { editComment_give, value } = req.body;
+  await Comment.findByIdAndUpdate(value, {
+    $set: { comment: editComment_give },
+  });
+  res.send({ result: 'success' });
 });
 
 module.exports = router;
