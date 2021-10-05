@@ -123,9 +123,10 @@
                         let userId = response[i]['userId']
                         let comment = response[i]['comment']
                         let postTime =response[i]['postTime']
+                        let commentId = response[i]['_id']
 
                         let temp_html = ` <br>
-                                        작성자:${userId}, 내용:${comment}, 작성일시:${postTime} <button onclick="">수정</button> <button onclick="delComment()" value="">삭제</button>
+                                        작성자:${userId}, 내용:${comment}, 작성일시:${postTime} <button onclick="">수정</button> <button onclick="delComment(this.value)" value="${commentId}">삭제</button>
                                         <br> `
 
                         $('#commentList').append(temp_html)
@@ -134,19 +135,19 @@
             });
         }
 
-        function delComment() {
+        function delComment(value) {
             $.ajax({
                 type: "DELETE",
                 url: `/api/delComment/${_id}`,
-                date: {
-                    _id_give : _id
+                data: {
+                    value: value
                 },
                 success: function (response) {
-                    alert('삭제되었습니다')
-                    window.href.reload()
+                    alert('삭제되었습니다');
+                    window.location.reload();
                 },
                 error: function (xhr, status, err) {
-                    if(xhr,status === 400) {
+                    if(xhr.status === 400) {
                         alert('본인의 글만 삭제가능합니다')
                     }
                 }

@@ -122,11 +122,17 @@ router.get('/getComment/:_id', async (req, res) => {
 });
 
 // 댓글 삭제
-router.delete('/delComment/:_id', authMiddleware, async (req, res) => {
+router.delete('/delComment/:id', authMiddleware, async (req, res) => {
   const { _id } = req.params;
-  comments = await Comment.findOne({ _id: _id });
-  console.log(comments);
-  console.log(res.locals.user);
+  const userId = res.locals.user;
+  const { value } = req.body;
+  targetComment = await Comment.findOne({ _id: value });
+  if (userId === targetComment.userId) {
+    await Comment.deleteOne({ _id: value });
+    res.send({ result: 'success' });
+  } else {
+    res.status(400).send({});
+  }
 });
 
 module.exports = router;
