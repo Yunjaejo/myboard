@@ -144,6 +144,9 @@
         }
 
         function delComment(value) {
+            if(!confirm('삭제하시겠습니까?')) {
+                return false
+            } else {
             $.ajax({
                 type: "DELETE",
                 url: `/api/delComment/${_id}`,
@@ -159,7 +162,9 @@
                         alert('본인의 글만 삭제가능합니다')
                     }
                 }
+                
             })
+            }
         }
 
         function editComment(value) {
