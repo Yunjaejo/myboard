@@ -1,77 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <title>회원가입 페이지</title>
 
     <script>
-        
-        // 회원가입하기
-        function signUp() {
-            let reg_name1 = /^[A-za-z0-9]{3,}/g;
-            let id = $("#id").val()
-            let pw = $("#pw1").val()
-            let pw2 = $("#pw2").val()
-            if ( !reg_name1.test(id) ) {
-                alert('아이디는 영어와 숫자로 4글자 이상이어야 합니다')
-            }
-            else if ( id === "" ) {
-                alert('아이디를 입력하세요')
-                return false
-            } else if ( pw === "") {
-                alert('비밀번호를 입력하세요')
-                return false
-            } else if ( pw2 === "" ) {
-                alert('비밀번호를 입력하세요')
-                return false
-            } else if ( pw !== pw2 ) {
-                alert('비밀번호를 확인하세요')
-                return false
-            } else if ( pw.indexOf(id) > -1 ) {
-                alert('비밀번호에 아이디가 포함되어 있습니다')
-                return false
-            } else if ( pw.length < 4) {
-                alert('비밀번호는 4글자 이상이어야 합니다')
-                return false
-            }
-            else {
-                $.ajax({
-                type: "POST",
-                url: "/user/signUp",
-                data: {
-                    id_give: id,
-                    pw_give: pw
-                },
-                success: function (response) {
-                    alert("회원가입을 축하합니다!")
-                    window.location.replace("/")
-                },
-                error: function (xhr, status, error) {
-                    if( xhr.status == 400 ) {
-                        alert('아이디가 중복되었습니다.')
-                    }
-                }
-           });
-            }
-        }
- 
+      // 회원가입하기
+      function signUp() {
+        let reg_name1 = /^[A-za-z0-9]{3,}/g;
+        let id = $('#id').val();
+        let pw = $('#pw1').val();
+        let pw2 = $('#pw2').val();
 
+        $.ajax({
+          type: 'POST',
+          url: '/user/signUp',
+          data: {
+            id_give: id,
+            pw_give: pw,
+            pw2_give: pw2,
+          },
+          success: function (response) {
+            alert('회원가입을 축하합니다!');
+            window.location.replace('/');
+          },
+          error: function (xhr, status, error) {
+            if (xhr.status == 400) {
+              alert('아이디가 중복되었습니다.');
+            } else {
+                alert('조건을 확인하세요.')
+            }
+          },
+        });
+      }
     </script>
-</head>
+  </head>
 
-<body>
-<h1>회원가입 합시다. </h1>
-<hr>
-ID : <input type="text" id="id"><hr>
-PW : <input type="password" id="pw1"><hr>
-PW2 : <input type="password" id="pw2"><hr>
-<button onclick="signUp()">등록</button>
-
-</body>
-
+  <body>
+    <h1>회원가입 합시다.</h1>
+    <hr />
+    ID(4글자 이상, 숫자 영문만 가능) : <input type="text" id="id" />
+    <hr />
+    PW(4글자 이상) : <input type="password" id="pw1" />
+    <hr />
+    PW2(PW와 동일) : <input type="password" id="pw2" />
+    <hr />
+    <button onclick="signUp()">등록</button>
+  </body>
 </html>

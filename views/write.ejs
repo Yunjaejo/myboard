@@ -1,56 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <title>글 작성 페이지</title>
 
     <script>
-        // 글 쓰기
-        function getData() {
-            let name = $("#name").val()
-            let pw = $("#pw").val()
-            let title = $("#title").val()
-            let intext = $("#intext").val()
-            $.ajax({
-                type: "POST",
-                url: "/post/postTest",
-                data: {
-                    name_give: name,
-                    pw_give: pw,
-                    title_give: title,
-                    intext_give: intext
-                },
-                success: function (response) {
-                    if (name && pw && title && intext !== "") {
-                        alert('저장 완료')
-                        window.location.replace('/')
-                    } else {
-                        alert("빈칸을 입력해주세요")
-                    }
-                },
-            });
+      function XSSCheck(str, level) {
+        if (level == undefined || level == 0) {
+          str = str.replace(/\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-/g, '');
+        } else if (level != undefined && level == 1) {
+          str = str.replace(/\</g, '&lt;');
+          str = str.replace(/\>/g, '&gt;');
         }
-        // 목록으로 돌아가기
-        function goToList() {
-            window.location.href = "/"
-        }
+        return str;
+      }
 
+      // 글 쓰기
+      function getData() {
+        let name = $('#name').val();
+        let pw = $('#pw').val();
+        let title = $('#title').val();
+        let intext = $('#intext').val();
+        $.ajax({
+          type: 'POST',
+          url: '/post/postTest',
+          data: {
+            name_give: XSSCheck(name),
+            pw_give: XSSCheck(pw),
+            title_give: XSSCheck(title),
+            intext_give: XSSCheck(intext),
+          },
+          success: function (response) {
+            if (name && pw && title && intext !== '') {
+              alert('저장 완료');
+              window.location.replace('/');
+            } else {
+              alert('빈칸을 입력해주세요');
+            }
+          },
+        });
+      }
+      // 목록으로 돌아가기
+      function goToList() {
+        window.location.href = '/';
+      }
     </script>
-</head>
+  </head>
 
-<body>
-
-    작성자 : <input type="text" id="name"> 비밀번호 : <input type="password" id="pw"> <br><br>
-    제목 : <input type="text" id="title" size="50"><br><br>
-    내용 <textarea cols="100" rows="10" id="intext"></textarea><br><br>
+  <body>
+    작성자 : <input type="text" id="name" /> 비밀번호 :
+    <input type="password" id="pw" /> <br /><br />
+    제목 : <input type="text" id="title" size="50" /><br /><br />
+    내용 <textarea cols="100" rows="10" id="intext"></textarea><br /><br />
     <button id="submit" onclick="getData()">제출하기</button>
     <button id="reset" onclick="goToList()">취소하기</button>
-
-</body>
-
+  </body>
 </html>

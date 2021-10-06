@@ -1,137 +1,147 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
     <title>글 상세 페이지</title>
+    
 
     <script>
-        const queryString = window.location.search
-        const urlParams = new URLSearchParams(queryString)
-        const _id = urlParams.get("_id") // api에서 가져온 _id값이 어떤건지 알려줌
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const _id = urlParams.get('_id'); // api에서 가져온 _id값이 어떤건지 알려줌
 
-        $(document).ready(function () {
-            get_post()
-            getComment()
-        })
+      function XSSCheck(str, level) {
+        if (level == undefined || level == 0) {
+          str = str.replace(/\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-/g, '');
+        } else if (level != undefined && level == 1) {
+          str = str.replace(/\</g, '&lt;');
+          str = str.replace(/\>/g, '&gt;');
+        }
+        return str;
+      }
 
-        // 게시글 상세 불러오기
-        function get_post() {
-            $.ajax({
-                type: "GET",
-                url: `/post/postTest/${_id}`,
-                data: {},
-                success: function (response) {
-                    let name = response['posts']['name']
-                    let title = response['posts']['title']
-                    let postTime = response['posts']['postTime']
-                    let _id = response['posts']['_id']
-                    let intext = response['posts']['intext']
+      $(document).ready(function () {
+        get_post();
+        getComment();
+      });
 
-                    let temp_html = `<label>작성자: ${name}</label><br>
+      // 게시글 상세 불러오기
+      function get_post() {
+        $.ajax({
+          type: 'GET',
+          url: `/post/postTest/${_id}`,
+          data: {},
+          success: function (response) {
+            let name = response['posts']['name'];
+            let title = response['posts']['title'];
+            let postTime = response['posts']['postTime'];
+            let _id = response['posts']['_id'];
+            let intext = response['posts']['intext'];
+
+            let temp_html = `<label>작성자: ${name}</label><br>
                                     <label>제목: ${title}</label><br>
                                     <label>게시일: ${postTime}</label><br>
-                                    <label>글 내용<br>${intext} </label><br>`
+                                    <label>글 내용<br>${intext} </label><br>`;
 
+            $('#detail').append(temp_html);
+          },
+        });
+      }
 
-                    $('#detail').append(temp_html)
+      // 게시글 삭제
+      function deletePost() {
+        let pwPrompt = prompt('비밀번호를 입력하세요');
 
+        $.ajax({
+          type: 'DELETE',
+          url: `/post/postTest/${_id}`,
+          data: {
+            pwPrompt: pwPrompt,
+          },
+          success: function (response) {
+            if (response['result'] === 'success') {
+              alert('삭제 성공');
+              window.location.replace('/');
+            } else {
+              alert('비밀번호를 확인해주세요');
+            }
+          },
+        });
+      }
 
+      function goToList() {
+        window.location.href = '/';
+      }
 
-                }
-            })
-        }
+      // 수정하러 가는데 비밀번호 검증
+      function goToEdit() {
+        let pwPrompt = prompt('비밀번호를 입력하세요');
+        $('#postList').empty();
+        $.ajax({
+          type: 'GET',
+          url: `/post/postTest/${_id}`,
+          data: {},
+          success: function (response) {
+            let pw = response['posts']['pw'];
+            if (pwPrompt === pw) {
+              window.location.href = `/edit?_id=${_id}`;
+            } else {
+              alert('비밀번호를 확인하세요');
+            }
+          },
+        });
+      }
 
-        // 게시글 삭제
-        function deletePost() {
-            let pwPrompt = prompt('비밀번호를 입력하세요')
+      // 댓글 달기
+      function postComment() {
+        let comment = $('#comment').val();
 
-            $.ajax({
-                type: "DELETE",
-                url: `/post/postTest/${_id}`,
-                data: {
-                    pwPrompt: pwPrompt
-                },
-                success: function (response) {
+        $.ajax({
+          type: 'POST',
+          url: `/comm/postComment/${_id}`,
+          data: {
+            comment_give: XSSCheck(comment),
+          },
+          success: function (response) {
+            if (comment !== '') {
+              alert('저장 완료');
+              window.location.reload();
+            } else {
+              alert('빈칸을 입력해주세요');
+            }
+          },
+        });
+      }
 
-                    if (response['result'] === 'success') {
-                        alert('삭제 성공')
-                        window.location.replace('/')
-                    } else {
-                        alert('비밀번호를 확인해주세요')
-                    }
-                }
-            })
-        }
+      // 댓글 불러오기
+      function getComment() {
+        $('#commentList').empty();
+        $.ajax({
+          type: 'GET',
+          url: `/comm/getComment/${_id}`,
+          data: {},
+          success: function (response) {
+            for (let i = 0; i < response.length; i++) {
+              let userId = response[i]['userId'];
+              let comment = response[i]['comment'];
+              let postTime = response[i]['postTime'];
+              let commentId = response[i]['_id'];
 
-        function goToList() {
-            window.location.href = "/"
-        }
-
-        // 수정하러 가는데 비밀번호 검증
-        function goToEdit() {
-
-            let pwPrompt = prompt('비밀번호를 입력하세요')
-            $("#postList").empty();
-            $.ajax({
-                type: "GET",
-                url: `/post/postTest/${_id}`,
-                data: {},
-                success: function (response) {
-                    let pw = response['posts']['pw']
-                    if (pwPrompt === pw) {
-                        window.location.href = `/edit?_id=${_id}`
-                    } else {
-                        alert('비밀번호를 확인하세요')
-                    }
-                }
-            })
-        }
-
-        // 댓글 달기
-        function postComment() {
-            let comment = $("#comment").val()
-
-                $.ajax({
-                    type: "POST",
-                    url: `/comm/postComment/${_id}`,
-                    data: {
-                        comment_give: comment
-                    },
-                    success: function (response) {
-                        if (comment !== "") {
-                            alert('저장 완료')
-                            window.location.reload()
-                        } else {
-                            alert("빈칸을 입력해주세요")
-                        }
-                    },
-                });
-        }
-
-        // 댓글 불러오기
-        function getComment() {
-            $("#commentList").empty();
-            $.ajax({
-                type: "GET",
-                url: `/comm/getComment/${_id}`,
-                data: {},
-                success: function (response) {
-                    for (let i = 0; i < response.length; i++) {
-                        let userId = response[i]['userId']
-                        let comment = response[i]['comment']
-                        let postTime =response[i]['postTime']
-                        let commentId = response[i]['_id']
-
-                        let temp_html = `<br>
+              let temp_html = `<br>
                             <div id="${commentId}1" style="display: block;">
                             작성자:${userId}, 내용:${comment}, 작성일시:${postTime} 
                             <button onclick="editComment('${commentId}')" value="">수정</button> 
@@ -139,107 +149,95 @@
                             </div>
                             <br>
                             <div id="${commentId}2" value="${commentId}" style="display: none;">
-                            <input type="text" name="newEditComment" id="newEditComment${[i]}"><button value ="${commentId} newEditComment${i}" onclick="editSubmit(this.value)">수정완료</button>
+                            <input type="text" name="newEditComment" id="newEditComment${[
+                              i,
+                            ]}"><button value ="${commentId} newEditComment${i}" onclick="editSubmit(this.value)">수정완료</button>
                             </div>
-                        `
+                        `;
 
-                        $('#commentList').append(temp_html)
-                    }
-                }
-            });
-        }
-
-        // 댓글 삭제
-        function delComment(value) {
-            if(!confirm('삭제하시겠습니까?')) {
-                return false
-            } else {
-            $.ajax({
-                type: "DELETE",
-                url: `/comm/delComment/${_id}`,
-                data: {
-                    value: value
-                },
-                success: function (response) {
-                    alert('삭제되었습니다');
-                    window.location.reload();
-                },
-                error: function (xhr, status, err) {
-                    if(xhr.status === 400) {
-                        alert('본인의 글만 삭제가능합니다')
-                    }
-                }
-                
-            })
+              $('#commentList').append(temp_html);
             }
+          },
+        });
+      }
+
+      // 댓글 삭제
+      function delComment(value) {
+        if (!confirm('삭제하시겠습니까?')) {
+          return false;
+        } else {
+          $.ajax({
+            type: 'DELETE',
+            url: `/comm/delComment/${_id}`,
+            data: {
+              value: value,
+            },
+            success: function (response) {
+              alert('삭제되었습니다');
+              window.location.reload();
+            },
+            error: function (xhr, status, err) {
+              if (xhr.status === 400) {
+                alert('본인의 글만 삭제가능합니다');
+              }
+            },
+          });
         }
+      }
 
-        // 댓글 수정버튼누르면 값가져오기
-        function editComment(value) {
-            $.ajax({
-                type: "POST",
-                url: `/comm/editComment/${_id}`,
-                data: {
-                    value: value
-                },
-                success: function (response) {
-                    $('input[name=newEditComment').attr('value', response)
-                    $(`#${value}`+'1').hide();
-                    $(`#${value}`+'2').show();
-                },
-                error: function (xhr, status, err) {
-                    if(xhr.status === 400) {
-                        alert('본인의 글만 수정가능합니다.')
-                    }
-                }
-            })
+      // 댓글 수정버튼누르면 값가져오기
+      function editComment(value) {
+        $.ajax({
+          type: 'POST',
+          url: `/comm/editComment/${_id}`,
+          data: {
+            value: value,
+          },
+          success: function (response) {
+            $('input[name=newEditComment').attr('value', response);
+            $(`#${value}` + '1').hide();
+            $(`#${value}` + '2').show();
+          },
+          error: function (xhr, status, err) {
+            if (xhr.status === 400) {
+              alert('본인의 글만 수정가능합니다.');
+            }
+          },
+        });
+      }
 
-        }
-
-        // 댓글 수정하고 저장
-        function editSubmit(value) {
-            value1 = value.split(' ')[0]
-            value2 = value.split(' ')[1]
-            let editComment = $(`#${value2}`).val()
-            console.log(editComment)
-            $.ajax({
-                type: "PATCH",
-                url: `/comm/editSubmit/${_id}`,
-                data: {
-                    value: value1,
-                    editComment_give: editComment
-                },
-                success: function (response) {
-                    window.location.reload()
-                }
-            })
-        }
-
+      // 댓글 수정하고 저장
+      function editSubmit(value) {
+        value1 = value.split(' ')[0];
+        value2 = value.split(' ')[1];
+        let editComment = $(`#${value2}`).val();
+        console.log(editComment);
+        $.ajax({
+          type: 'PATCH',
+          url: `/comm/editSubmit/${_id}`,
+          data: {
+            value: value1,
+            editComment_give: XSSCheck(editComment),
+          },
+          success: function (response) {
+            window.location.reload();
+          },
+        });
+      }
     </script>
-</head>
+  </head>
 
-<body>
-
-    <div id="detail">
-
-    </div>
-        <button id="edit" onclick="goToEdit()">수정하기</button> <button id="delete" onclick="deletePost()">삭제하기</button>
-        <button id="list" onclick="goToList()">목록으로</button>
-    <hr>
-        <% if (user)  { %>
-        <%= user %> 접속 중<br>
-        <input type="text" id="comment"> <button onclick="postComment()">댓글 등록</button>
-        <% } else { %>
-            댓글을 등록하려면 로그인이 필요합니다. <a href="/">로그인하기</a>
-        <% } %>
-    <div id="commentList">
-
-    </div>
-    
-
-
-
-
-</body>
-
+  <body>
+    <div id="detail"></div>
+    <button id="edit" onclick="goToEdit()">수정하기</button>
+    <button id="delete" onclick="deletePost()">삭제하기</button>
+    <button id="list" onclick="goToList()">목록으로</button>
+    <hr />
+    <% if (user) { %> <%= user %> 접속 중<br />
+    <input type="text" id="comment" />
+    <button onclick="postComment()">댓글 등록</button> <% } else { %> 댓글을
+    등록하려면 로그인이 필요합니다. <a href="/">로그인하기</a>
+    <% } %>
+    <div id="commentList"></div>
+  </body>
 </html>

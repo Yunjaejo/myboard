@@ -2,10 +2,14 @@ const mongoose = require('mongoose');
 
 const connect = () => {
   mongoose
-    .connect('mongodb://localhost:27017/myboard', {
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
-    })
+    .connect(
+
+      'mongodb://localhost:27017/myboard',
+      {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      }
+    )
     .catch((err) => console.log(err));
 };
 

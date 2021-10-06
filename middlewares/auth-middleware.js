@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
       console.log('로컬 유저는?', res.locals.user);
     }
   } catch (err) {
-    res.status(400).send({ errorMessage: '로그인이 필요합니다' });
+    res.status(401).send({ errorMessage: '로그인이 필요합니다' });
     return;
   }
   next();
