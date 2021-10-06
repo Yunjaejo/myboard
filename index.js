@@ -18,8 +18,8 @@ const postRouter = require('./routers/post');
 const userRouter = require('./routers/user');
 const commRouter = require('./routers/comm');
 app.use('/post', [postRouter]); // postRouter를 api 하위부분에서 쓰겠다 !
-app.use('/user', [userRouter]); 
-app.use('/comm', [commRouter]); 
+app.use('/user', [userRouter]);
+app.use('/comm', [commRouter]);
 
 app.set('views', __dirname + '/views'); // views의 경로는 /views
 app.set('view engine', 'ejs'); // 뷰 엔진으로 ejs 사용
