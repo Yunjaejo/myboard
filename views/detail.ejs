@@ -133,7 +133,7 @@
                             </div>
                             <br>
                             <div id="${commentId}2" value="${commentId}" style="display: none;">
-                            <input type="text" name="editComment" id="editComment"><button value ="${commentId}" onclick="editSubmit('${commentId}')">수정완료</button>
+                            <input type="text" name="newEditComment" id="newEditComment${[i]}"><button value ="${commentId} newEditComment${i}" onclick="editSubmit(this.value)">수정완료</button>
                             </div>
                         `
 
@@ -175,7 +175,7 @@
                     value: value
                 },
                 success: function (response) {
-                    $('input[name=editComment').attr('value', response)
+                    $('input[name=newEditComment').attr('value', response)
                     $(`#${value}`+'1').hide();
                     $(`#${value}`+'2').show();
                 },
@@ -189,16 +189,16 @@
         }
 
         function editSubmit(value) {
-            let editComment = $("#editComment").val()
+            let editComment = $(`#${value2}`).val()
+            console.log(editComment)
             $.ajax({
                 type: "PATCH",
                 url: `/api/editSubmit/${_id}`,
                 data: {
-                    value: value,
+                    value: value1,
                     editComment_give: editComment
                 },
                 success: function (response) {
-                    alert('수정완료')
                     window.location.reload()
                 }
             })

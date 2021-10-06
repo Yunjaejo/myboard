@@ -151,10 +151,11 @@ router.post('/editComment/:_id', authMiddleware, async (req, res) => {
 
 // 댓글 수정본 저장
 router.patch('/editSubmit/:_id', authMiddleware, async (req, res) => {
-  const { editComment_give, value } = req.body;
-  await Comment.findByIdAndUpdate(value, {
-    $set: { comment: editComment_give },
-  });
+  const { value, editComment_give } = req.body;
+  await Comment.updateOne(
+    { _id: value },
+    { $set: { comment: editComment_give } }
+  );
   res.send({ result: 'success' });
 });
 

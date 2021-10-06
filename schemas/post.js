@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const { Schema } = mongoose
+const { Schema } = mongoose;
 const postSchema = new Schema({
   name: {
     type: String,
@@ -22,6 +22,6 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
-})
+});
 
-module.exports = mongoose.model('Post', postSchema) // 이 스키마를 모델링해서 내보내겠다 !
+module.exports = mongoose.model('Post', postSchema); // 이 스키마를 모델링해서 내보내겠다 !
