@@ -10,6 +10,7 @@
     <title>글 작성 페이지</title>
 
     <script>
+        // 글 쓰기
         function getData() {
             let name = $("#name").val()
             let pw = $("#pw").val()
@@ -17,7 +18,7 @@
             let intext = $("#intext").val()
             $.ajax({
                 type: "POST",
-                url: "/api/postTest",
+                url: "/post/postTest",
                 data: {
                     name_give: name,
                     pw_give: pw,
@@ -34,6 +35,7 @@
                 },
             });
         }
+        // 목록으로 돌아가기
         function goToList() {
             window.location.href = "/"
         }

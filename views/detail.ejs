@@ -23,10 +23,11 @@
             getComment()
         })
 
+        // 게시글 상세 불러오기
         function get_post() {
             $.ajax({
                 type: "GET",
-                url: `/api/postTest/${_id}`,
+                url: `/post/postTest/${_id}`,
                 data: {},
                 success: function (response) {
                     let name = response['posts']['name']
@@ -49,12 +50,13 @@
             })
         }
 
+        // 게시글 삭제
         function deletePost() {
             let pwPrompt = prompt('비밀번호를 입력하세요')
 
             $.ajax({
                 type: "DELETE",
-                url: `/api/postTest/${_id}`,
+                url: `/post/postTest/${_id}`,
                 data: {
                     pwPrompt: pwPrompt
                 },
@@ -73,13 +75,15 @@
         function goToList() {
             window.location.href = "/"
         }
+
+        // 수정하러 가는데 비밀번호 검증
         function goToEdit() {
 
             let pwPrompt = prompt('비밀번호를 입력하세요')
             $("#postList").empty();
             $.ajax({
                 type: "GET",
-                url: `/api/postTest/${_id}`,
+                url: `/post/postTest/${_id}`,
                 data: {},
                 success: function (response) {
                     let pw = response['posts']['pw']
@@ -92,12 +96,13 @@
             })
         }
 
+        // 댓글 달기
         function postComment() {
             let comment = $("#comment").val()
 
                 $.ajax({
                     type: "POST",
-                    url: `/api/postComment/${_id}`,
+                    url: `/comm/postComment/${_id}`,
                     data: {
                         comment_give: comment
                     },
@@ -112,11 +117,12 @@
                 });
         }
 
+        // 댓글 불러오기
         function getComment() {
             $("#commentList").empty();
             $.ajax({
                 type: "GET",
-                url: `/api/getComment/${_id}`,
+                url: `/comm/getComment/${_id}`,
                 data: {},
                 success: function (response) {
                     for (let i = 0; i < response.length; i++) {
@@ -143,13 +149,14 @@
             });
         }
 
+        // 댓글 삭제
         function delComment(value) {
             if(!confirm('삭제하시겠습니까?')) {
                 return false
             } else {
             $.ajax({
                 type: "DELETE",
-                url: `/api/delComment/${_id}`,
+                url: `/comm/delComment/${_id}`,
                 data: {
                     value: value
                 },
@@ -167,10 +174,11 @@
             }
         }
 
+        // 댓글 수정버튼누르면 값가져오기
         function editComment(value) {
             $.ajax({
                 type: "POST",
-                url: `/api/editComment/${_id}`,
+                url: `/comm/editComment/${_id}`,
                 data: {
                     value: value
                 },
@@ -188,12 +196,15 @@
 
         }
 
+        // 댓글 수정하고 저장
         function editSubmit(value) {
+            value1 = value.split(' ')[0]
+            value2 = value.split(' ')[1]
             let editComment = $(`#${value2}`).val()
             console.log(editComment)
             $.ajax({
                 type: "PATCH",
-                url: `/api/editSubmit/${_id}`,
+                url: `/comm/editSubmit/${_id}`,
                 data: {
                     value: value1,
                     editComment_give: editComment

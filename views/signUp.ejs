@@ -11,8 +11,9 @@
 
     <script>
         
+        // 회원가입하기
         function signUp() {
-            let reg_name1 = /^[A-za-z0-9]{4,}/g;
+            let reg_name1 = /^[A-za-z0-9]{3,}/g;
             let id = $("#id").val()
             let pw = $("#pw1").val()
             let pw2 = $("#pw2").val()
@@ -41,7 +42,7 @@
             else {
                 $.ajax({
                 type: "POST",
-                url: "/api/signUp",
+                url: "/user/signUp",
                 data: {
                     id_give: id,
                     pw_give: pw

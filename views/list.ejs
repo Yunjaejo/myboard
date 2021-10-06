@@ -20,11 +20,12 @@
             get_list()
         })
 
+        // 토탈 게시글 불러오기
         function get_list() {
             $("#postList").empty();
             $.ajax({
                 type: "GET",
-                url: `/api/postTest`,
+                url: `/post/postTest`,
                 data: {},
                 success: function (response) {
                     for (let i = 0; i < response.length; i++) {
@@ -47,19 +48,22 @@
             });
         }
 
+        // 글쓰러가기
         function goToWrite() {
             window.location.href = "/write"
         }
+        // 회원가입하기
         function signUp() {
             window.location.href = '/signUp'
         }
 
+        // 로그인
         function login() {
             let id = $("#id").val()
             let pw = $("#pw").val()
             $.ajax({
                 type: "POST",
-                url: "/api/login",
+                url: "/user/login",
                 data: {
                     id_give: id,
                     pw_give: pw
@@ -76,6 +80,7 @@
            });
         }
 
+        // 로그아웃
         function delCookie() {
             document.cookie = 'user=; expires=Thu, 18 Dec 2013 12:00:00 GMT'
             window.location.reload()

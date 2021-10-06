@@ -14,8 +14,12 @@ connect(); // 모델이랑 연결하기
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // POST로 메소드 받을 때 req.body로 사용가능하게 함
 
-const postRouter = require('./routers/post'); // routes아님 routers임
-app.use('/api', [postRouter]); // postRouter를 api 하위부분에서 쓰겠다 !
+const postRouter = require('./routers/post');
+const userRouter = require('./routers/user');
+const commRouter = require('./routers/comm');
+app.use('/post', [postRouter]); // postRouter를 api 하위부분에서 쓰겠다 !
+app.use('/user', [userRouter]); 
+app.use('/comm', [commRouter]); 
 
 app.set('views', __dirname + '/views'); // views의 경로는 /views
 app.set('view engine', 'ejs'); // 뷰 엔진으로 ejs 사용

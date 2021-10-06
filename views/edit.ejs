@@ -22,10 +22,11 @@
             showDetail()
         })
 
+        // 수정 시 값 가져오기
         function showDetail() {
             $.ajax({
                 type: "GET",
-                url: `/api/postTest/${_id}`,
+                url: `/post/postTest/${_id}`,
                 data: {},
                 success: function (response) {
                     console.log(response)
@@ -43,6 +44,7 @@
             })
         }
 
+        // 수정한거 저장
         function editPost() {
             let name = $("#name").val()
             let pw = $("#pw").val()
@@ -50,7 +52,7 @@
             let intext = $("#intext").val()
             $.ajax({
                 type: "PATCH",
-                url: `/api/postTest/${_id}`,
+                url: `/post/postTest/${_id}`,
                 data: {
                     name_give: name,
                     pw_give: pw,
