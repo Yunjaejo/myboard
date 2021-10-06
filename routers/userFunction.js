@@ -10,21 +10,21 @@ function pwConfirm(pw_give, pw2_give) {
   if (pw_give === pw2_give) {
     return true;
   }
-  return false
+  return false;
 }
 
 function pwLenCheck(pw_give) {
   if (pw_give.length >= 4) {
     return true;
   }
-  return false
+  return false;
 }
 
 function pw_idCheck(id_give, pw_give) {
   if (!id_give.includes(pw_give)) {
     return true;
   }
-  return false
+  return false;
 }
 
 module.exports = { idCheck, pwConfirm, pwLenCheck, pw_idCheck };
