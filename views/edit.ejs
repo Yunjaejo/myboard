@@ -1,12 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
@@ -14,78 +20,76 @@
     <title>글 수정 페이지</title>
 
     <script>
-        const queryString = window.location.search
-        const urlParams = new URLSearchParams(queryString)
-        const _id = urlParams.get("_id") // api에서 가져온 _id값이 어떤건지 알려줌
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const _id = urlParams.get('_id'); // api에서 가져온 _id값이 어떤건지 알려줌
 
-        $(document).ready(function () {
-            showDetail()
-        })
-
-        // 수정 시 값 가져오기
-        function showDetail() {
-            $.ajax({
-                type: "GET",
-                url: `/post/postTest/${_id}`,
-                data: {},
-                success: function (response) {
-                    console.log(response)
-                    let name = response['posts']['name']
-                    let title = response['posts']['title']
-                    let pw = response['posts']['pw']
-                    let intext = response['posts']['intext']
-
-                    $('input[name=inputName]').attr('value', name);
-                    $('input[name=inputTitle]').attr('value', title);
-                    // $('textarea[name=inputIntext]').attr('value', intext);
-
-                    $('#intext').append(intext)
-                }
-            })
+      function XSSCheck(str, level) {
+        if (level == undefined || level == 0) {
+          str = str.replace(/\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-/g, '');
+        } else if (level != undefined && level == 1) {
+          str = str.replace(/\</g, '&lt;');
+          str = str.replace(/\>/g, '&gt;');
         }
+        return str;
+      }
 
-        // 수정한거 저장
-        function editPost() {
-            let name = $("#name").val()
-            let pw = $("#pw").val()
-            let title = $("#title").val()
-            let intext = $("#intext").val()
-            $.ajax({
-                type: "PATCH",
-                url: `/post/postTest/${_id}`,
-                data: {
-                    name_give: name,
-                    pw_give: pw,
-                    title_give: title,
-                    intext_give: intext
-                },
-                success: function (response) {
-                    alert('수정완료')
-                    window.location.replace(`/postTest?_id=${_id}`)
-                }
-            })
-        }
+      $(document).ready(function () {
+        showDetail();
+      });
 
+      // 수정 시 값 가져오기
+      function showDetail() {
+        $.ajax({
+          type: 'GET',
+          url: `/post/postTest/${_id}`,
+          data: {},
+          success: function (response) {
+            console.log(response);
+            let name = response['posts']['name'];
+            let title = response['posts']['title'];
+            let pw = response['posts']['pw'];
+            let intext = response['posts']['intext'];
 
+            $('input[name=inputName]').attr('value', name);
+            $('input[name=inputTitle]').attr('value', title);
+            // $('textarea[name=inputIntext]').attr('value', intext);
 
+            $('#intext').append(intext);
+          },
+        });
+      }
 
-
+      // 수정한거 저장
+      function editPost() {
+        let name = $('#name').val();
+        let pw = $('#pw').val();
+        let title = $('#title').val();
+        let intext = $('#intext').val();
+        $.ajax({
+          type: 'PATCH',
+          url: `/post/postTest/${_id}`,
+          data: {
+            name_give: XSSCheck(name),
+            title_give: XSSCheck(title),
+            intext_give: XSSCheck(intext),
+          },
+          success: function (response) {
+            alert('수정완료');
+            window.location.href = `/postTest?_id=${_id}`
+          },
+        });
+      }
     </script>
-</head>
+  </head>
 
-<body>
-
-    작성자 : <input type="text" id="name" name="inputName">
-    <br><br>
-    제목 : <input type="text" id="title" size="50" name="inputTitle"><br><br>
-    내용 <textarea cols="100" rows="10" id="intext" name="textIntext"></textarea><br><br>
+  <body>
+    작성자 : <input type="text" id="name" name="inputName" /> <br /><br />
+    제목 :
+    <input type="text" id="title" size="50" name="inputTitle" /><br /><br />
+    내용 <textarea cols="100" rows="10" id="intext" name="textIntext"></textarea
+    ><br /><br />
     <button id="edit" onclick="editPost()">수정하기</button>
     <button><a href="javascript:history.back();">뒤로가기</a></button>
-
-
-
-
-
-</body>
-
+  </body>
 </html>
